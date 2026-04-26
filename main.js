@@ -2,7 +2,7 @@
    OOP E-Portfolio — Main JavaScript
    ======================================== */
 
-// ======== PROJECT DATA (REFLECTIONS LOCKED) ========
+// ======== PROJECT DATA ========
 const MIDTERM_PROJECTS = [
   {
     id: "about-me",
@@ -22,7 +22,7 @@ const MIDTERM_PROJECTS = [
     file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity1-variables.pdf",
     fileType: "pdf",
     shortReflection: "Laying the cornerstone of my Java understanding.",
-    fullReflection: "The exercise felt like laying down the cornerstone of my new home in programming. There was a sense of satisfaction and comprehension of how everything fits together when I comprehended the relationship between JDK, JRE, and JVM. It was not simply memorizing definitions; it was about grasping concepts and having them click into place. I could finally understand why Java was so revolutionary—the concept of Write Once, Run Anywhere became more than just marketing hype."
+    fullReflection: "The exercise felt like laying down the cornerstone of my new home in programming. There was a sense of satisfaction and comprehension of how everything fits together when I comprehended the relationship between JDK, JRE, and JVM. It was not simply memorizing definitions; it was about grasping concepts and having them click into place. I could finally understand why Java was so revolutionary the concept of Write Once, Run Anywhere became more than just marketing hype."
   },
   {
     id: "activity-2",
@@ -92,7 +92,7 @@ const MIDTERM_PROJECTS = [
     file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/images/quiz1.png",
     fileType: "img",
     shortReflection: "OOP demands a special kind of thinking.",
-    fullReflection: "While working through this quiz, I came to realize that Object-Oriented Programming (OOP) demands some special kind of thinking process, unlike basic procedural programming. It is not enough to write code; one should be able to imagine how different objects will interact inside a certain application. For me personally, the biggest challenge was dealing with a large number of classes that needed to be traced. Sometimes, it seemed easy to imagine a flow of logic, but implementing it using rules of inheritance and encapsulation was tricky. The questions I failed to solve reflect my weaknesses in OOP. In particular, it became apparent to me that I often rushed when analyzing problems. As a result, I made some minor mistakes. At the same time, solving several difficult problems allowed me to view the topic from a slightly different angle. In conclusion, I can say that this experience has proven to me that OOP requires patience and careful examination. Although I consider myself satisfied with passing the test, 11 points that I have lost indicate areas to improve. Therefore, in the future, I would like to pay attention to manual code tracing and object relations."
+    fullReflection: "While working through this quiz, I came to realize that Object-Oriented Programming (OOP) demands some special kind of thinking process, unlike basic procedural programming. It is not enough to write code; one should be able to imagine how different objects will interact inside a certain application. For me personally, the biggest challenge was dealing with a large number of classes that needed to be traced. Sometimes, it seemed easy to imagine a flow of logic, but implementing it using rules of inheritance and encapsulation was tricky.\n\nThe questions I failed to solve reflect my weaknesses in OOP. In particular, it became apparent to me that I often rushed when analyzing problems. As a result, I made some minor mistakes. At the same time, solving several difficult problems allowed me to view the topic from a slightly different angle.\n\nIn conclusion, I can say that this experience has proven to me that OOP requires patience and careful examination. Although I consider myself satisfied with passing the test, 11 points that I have lost indicate areas to improve. Therefore, in the future, I would like to pay attention to manual code tracing and object relations."
   },
   {
     id: "midterm-oop",
@@ -102,7 +102,7 @@ const MIDTERM_PROJECTS = [
     file: null,
     fileType: "none",
     shortReflection: "Reflection on the written exam experience.",
-    fullReflection: "Based on the experience of taking the test on OOP, the first page had true or false statements. It was difficult for me to give a definite answer because sometimes I had trouble differentiating between the concepts which were true and which were false, thus making me feel unsure about receiving high marks. But there was nothing to worry about because I made an effort by reading about and reviewing this course. In the programming section, sometimes I used a wrong label, or used a syntax that was inappropriate. There was no possibility of testing the code since this was only written on paper. As far as multiple choice question, I felt more comfortable but nevertheless, coding was a challenge to test my knowledge of the process. Most importantly, I have learned from the experience. Though my progress is slow, there is a greater likelihood of realizing my full potential as there are many chances for learning and understanding the processes in Java programming language."
+    fullReflection: "Based on the experience of taking the test on OOP, the first page had true or false statements. It was difficult for me to give a definite answer because sometimes I had trouble differentiating between the concepts which were true and which were false, thus making me feel unsure about receiving high marks. But there was nothing to worry about because I made an effort by reading about and reviewing this course.\n\nIn the programming section, sometimes I used a wrong label, or used a syntax that was inappropriate. There was no possibility of testing the code since this was only written on paper. As far as multiple choice question, I felt more comfortable but nevertheless, coding was a challenge to test my knowledge of the process.\n\nMost importantly, I have learned from the experience. Though my progress is slow, there is a greater likelihood of realizing my full potential as there are many chances for learning and understanding the processes in Java programming language."
   }
 ];
 
@@ -139,9 +139,12 @@ function navigateTo(pageId) {
   if (activeLink) activeLink.classList.add('active');
 
   window.location.hash = pageId;
-  if(navLinksContainer) navLinksContainer.classList.remove('open');
-  if(hamburger) hamburger.classList.remove('open');
+  if (navLinksContainer) navLinksContainer.classList.remove('open');
+  if (hamburger) hamburger.classList.remove('open');
 }
+
+// Make globally accessible for HTML onclick attributes
+window.navigateTo = navigateTo;
 
 navLinks.forEach(link => {
   link.addEventListener('click', (e) => {
@@ -157,6 +160,60 @@ if (hamburger) {
   });
 }
 
+// ======== MODAL SYSTEM ========
+function openModal(project) {
+  if (!modalOverlay) return;
+  
+  modalTitle.textContent = project.title;
+  modalTag.textContent = project.type;
+  
+  // To preserve your line breaks (\n\n), we format it safely:
+  modalReflection.innerHTML = project.fullReflection.replace(/\n\n/g, '<br><br>');
+  modalBody.innerHTML = '';
+
+  if (project.fileType === 'pdf') {
+    // Open PDF in a new tab
+    window.open(project.file, '_blank');
+    
+    // Show a visual message inside the modal body so it's not empty
+    modalBody.innerHTML = `
+      <div style="text-align:center; padding: 30px;">
+        <p style="color:var(--accent); font-weight:bold; font-size:1.1rem;">📄 Document opened in a new tab.</p>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:10px;">GitHub restricts displaying code documents directly on websites, so we opened it for you safely in a new window.</p>
+      </div>`;
+  } else if (project.fileType === 'img') {
+    // Show the image inside the modal
+    const img = document.createElement('img');
+    img.src = project.file;
+    img.alt = project.title;
+    img.style.cssText = 'max-width:100%; max-height:65vh; object-fit:contain; border-radius:8px;';
+    modalBody.appendChild(img);
+  } else {
+    // Show a message for the paper exam
+    modalBody.innerHTML = `
+      <div style="text-align:center; padding: 30px;">
+        <p style="color:var(--text-muted); font-style:italic;">Written exam — no digital file available.</p>
+      </div>`;
+  }
+
+  // Open the modal so the user can ALWAYS see the reflection!
+  modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  if (!modalOverlay) return;
+  modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+if (modalClose) modalClose.addEventListener('click', closeModal);
+if (modalOverlay) {
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+}
+
 // ======== CARD RENDERING ========
 function createProjectCard(project, index) {
   const card = document.createElement('div');
@@ -164,17 +221,12 @@ function createProjectCard(project, index) {
   card.style.animationDelay = `${index * 80}ms`;
 
   const hasFile = project.fileType !== 'none';
-
   const buttonHTML = hasFile ? `
     <button class="card-btn">
       ${project.fileType === 'pdf' ? 'Open PDF' : 'View Image'}
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-      </svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </button>` : `
-    <span style="font-size:0.78rem; color:var(--text-muted); font-style:italic; margin-top:auto;">
-       Written exam — no digital file
-    </span>`;
+    <span style="font-size:0.78rem; color:var(--text-muted); font-style:italic; margin-top:auto;">Written Exam Reflection</span>`;
 
   card.innerHTML = `
     <div class="card-icon">${project.icon}</div>
@@ -184,8 +236,8 @@ function createProjectCard(project, index) {
     ${buttonHTML}
   `;
 
-  card.addEventListener('click', () => openProject(project));
-
+  // Make the entire card open the modal
+  card.addEventListener('click', () => openModal(project));
   return card;
 }
 
@@ -201,50 +253,6 @@ function createPlaceholderCard(item, index) {
   return card;
 }
 
-// ======== MODAL & PDF HANDLING (FIXED) ========
-function openProject(project) {
-  // Always update modal content first
-  if (!modalOverlay) return;
-  modalTitle.textContent = project.title;
-  modalTag.textContent = project.type;
-  modalReflection.textContent = project.fullReflection;
-  modalBody.innerHTML = '';
-
-  // Handle File Content
-  if (project.fileType === 'pdf') {
-    // FIX: Open PDF in new tab to bypass GitHub connection block
-    window.open(project.file, '_blank');
-    
-    // Add visual feedback in the modal
-    modalBody.innerHTML = `
-      <div style="text-align:center; padding: 20px;">
-        <p style="color:var(--accent); margin-bottom: 10px;">The PDF has been opened in a new tab.</p>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">GitHub prevents embedding raw files directly for security. You can read the reflection below.</p>
-      </div>`;
-  } else if (project.fileType === 'img') {
-    const img = document.createElement('img');
-    img.src = project.file;
-    img.style.cssText = 'max-width:100%; max-height:65vh; object-fit:contain; border-radius:8px;';
-    modalBody.appendChild(img);
-  }
-
-  // Open the modal regardless to show the reflection
-  modalOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  modalOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-if (modalClose) modalClose.addEventListener('click', closeModal);
-if (modalOverlay) {
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) closeModal();
-  });
-}
-
 // ======== INITIALIZATION ========
 document.addEventListener('DOMContentLoaded', () => {
   const midtermGrid = document.getElementById('midterm-grid');
@@ -256,12 +264,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (finalGrid) {
     FINAL_PLACEHOLDERS.forEach((p, i) => finalGrid.appendChild(createPlaceholderCard(p, i)));
   }
-  
+
   const hash = window.location.hash.replace('#', '') || 'home';
   navigateTo(hash);
   observeCards();
 });
 
+// Card reveal animation on scroll
 function observeCards() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
