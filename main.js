@@ -1,10 +1,11 @@
 /* ========================================
-   OOP E-Portfolio — Main JavaScript
-   SPA Navigation + Modal/Lightbox System
-   Robust event-delegation + GitHub Pages friendly
+   OOP E-Portfolio — Main JavaScript (fixed)
+   - Keeps full reflections
+   - Preflight HEAD checks before embedding files
+   - Robust event delegation and graceful fallbacks
    ======================================== */
 
-/* ======== PROJECT DATA ======== */
+/* ======== PROJECT DATA (full entries preserved) ======== */
 const MIDTERM_PROJECTS = [
   {
     id: "about-me",
@@ -191,16 +192,26 @@ function createPlaceholderCard(item, index) {
 }
 
 /* ======== MODAL ======== */
-function openModalById(projectId) {
+async function openModalById(projectId) {
   const project = PROJECTS_BY_ID[projectId];
   if (!project) {
     console.warn('openModalById: project not found', projectId);
     return;
   }
-  openModal(project);
+  await openModal(project);
 }
 
-function openModal(project) {
+async function urlExists(url) {
+  try {
+    const res = await fetch(url, { method: 'HEAD' });
+    return res.ok;
+  } catch (err) {
+    console.warn('urlExists fetch error', url, err);
+    return false;
+  }
+}
+
+async function openModal(project) {
   if (!modalOverlay || !modalBody) return;
 
   currentProject = project;
@@ -210,41 +221,64 @@ function openModal(project) {
   modalBody.innerHTML = '';
 
   if (project.fileType === 'pdf' && project.file) {
-    const embed = document.createElement('embed');
-    embed.src = project.file;
-    embed.type = 'application/pdf';
-    embed.style.width = '100%';
-    embed.style.height = '60vh';
-    embed.setAttribute('aria-label', project.title || 'PDF preview');
-    modalBody.appendChild(embed);
+    const url = new URL(project.file, window.location.href).href;
+    const exists = await urlExists(url);
+    if (exists) {
+      const embed = document.createElement('embed');
+      embed.src = url;
+      embed.type = 'application/pdf';
+      embed.style.width = '100%';
+      embed.style.height = '60vh';
+      embed.setAttribute('aria-label', project.title || 'PDF preview');
+      modalBody.appendChild(embed);
 
-    const fallback = document.createElement('a');
-    fallback.href = project.file;
-    fallback.target = '_blank';
-    fallback.rel = 'noopener noreferrer';
-    fallback.className = 'card-btn';
-    fallback.textContent = '📂 Open PDF in New Tab';
-    fallback.style.display = 'inline-flex';
-    fallback.style.marginTop = '12px';
-    modalBody.appendChild(fallback);
-
-    embed.addEventListener('error', () => {
-      embed.style.display = 'none';
+      const fallback = document.createElement('a');
+      fallback.href = url;
+      fallback.target = '_blank';
+      fallback.rel = 'noopener noreferrer';
+      fallback.className = 'card-btn';
+      fallback.textContent = '📂 Open PDF in New Tab';
       fallback.style.display = 'inline-flex';
-    });
+      fallback.style.marginTop = '12px';
+      modalBody.appendChild(fallback);
 
-    setTimeout(() => {
-      if (embed.clientHeight === 0 || embed.offsetHeight === 0) {
+      embed.addEventListener('error', () => {
         embed.style.display = 'none';
         fallback.style.display = 'inline-flex';
-      }
-    }, 600);
+      });
+
+      setTimeout(() => {
+        if (embed.clientHeight === 0 || embed.offsetHeight === 0) {
+          embed.style.display = 'none';
+          fallback.style.display = 'inline-flex';
+        }
+      }, 600);
+    } else {
+      modalBody.innerHTML = `
+        <p style="color:var(--text-dim); margin-bottom:8px;">
+          Preview not available. The file could not be found or is blocked by the server.
+        </p>
+      `;
+      const fallback = document.createElement('a');
+      fallback.href = url;
+      fallback.target = '_blank';
+      fallback.rel = 'noopener noreferrer';
+      fallback.className = 'card-btn';
+      fallback.textContent = '📂 Try to open file in new tab';
+      modalBody.appendChild(fallback);
+    }
   } else if (project.fileType === 'img' && project.file) {
-    const img = document.createElement('img');
-    img.src = project.file;
-    img.alt = project.title || '';
-    img.style.cssText = 'max-width:100%; max-height:65vh; object-fit:contain; border-radius:8px;';
-    modalBody.appendChild(img);
+    const url = new URL(project.file, window.location.href).href;
+    const exists = await urlExists(url);
+    if (exists) {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = project.title || '';
+      img.style.cssText = 'max-width:100%; max-height:65vh; object-fit:contain; border-radius:8px;';
+      modalBody.appendChild(img);
+    } else {
+      modalBody.innerHTML = `<p style="color:var(--text-dim)">Image not found.</p>`;
+    }
   } else {
     modalBody.innerHTML = `<p style="color:var(--text-dim)">No preview available for this item.</p>`;
   }
@@ -262,9 +296,9 @@ function closeModal() {
 
 /* ======== EVENT DELEGATION FOR CARDS ======== */
 function onMidtermGridClick(e) {
-  const btn = e.target.closest('[data-action="view-project"]');
+  const btn = e.target.closest('[data-action="view-project"], .card-btn');
   if (!btn) return;
-  const projectId = btn.getAttribute('data-project-id');
+  const projectId = btn.getAttribute('data-project-id') || btn.dataset.projectId;
   if (!projectId) return;
   openModalById(projectId);
 }
