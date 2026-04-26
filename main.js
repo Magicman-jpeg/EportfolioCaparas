@@ -2,7 +2,7 @@
    OOP E-Portfolio — Main JavaScript
    ======================================== */
 
-// ======== PROJECT DATA ========
+// ======== PROJECT DATA (REFLECTIONS LOCKED) ========
 const MIDTERM_PROJECTS = [
   {
     id: "about-me",
@@ -184,7 +184,6 @@ function createProjectCard(project, index) {
     ${buttonHTML}
   `;
 
-  // Entire card is clickable for better interaction
   card.addEventListener('click', () => openProject(project));
 
   return card;
@@ -202,31 +201,34 @@ function createPlaceholderCard(item, index) {
   return card;
 }
 
-// ======== MODAL & PDF HANDLING ========
+// ======== MODAL & PDF HANDLING (FIXED) ========
 function openProject(project) {
-  // If it's a PDF, open in a new tab to avoid the "Refused to Connect" GitHub error
-  if (project.fileType === 'pdf') {
-    window.open(project.file, '_blank');
-  } 
-  
-  // Always open the modal to show the full reflection text
+  // Always update modal content first
   if (!modalOverlay) return;
   modalTitle.textContent = project.title;
   modalTag.textContent = project.type;
   modalReflection.textContent = project.fullReflection;
   modalBody.innerHTML = '';
 
-  // If it's an image, embed it in the modal
-  if (project.fileType === 'img') {
+  // Handle File Content
+  if (project.fileType === 'pdf') {
+    // FIX: Open PDF in new tab to bypass GitHub connection block
+    window.open(project.file, '_blank');
+    
+    // Add visual feedback in the modal
+    modalBody.innerHTML = `
+      <div style="text-align:center; padding: 20px;">
+        <p style="color:var(--accent); margin-bottom: 10px;">The PDF has been opened in a new tab.</p>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">GitHub prevents embedding raw files directly for security. You can read the reflection below.</p>
+      </div>`;
+  } else if (project.fileType === 'img') {
     const img = document.createElement('img');
     img.src = project.file;
     img.style.cssText = 'max-width:100%; max-height:65vh; object-fit:contain; border-radius:8px;';
     modalBody.appendChild(img);
-  } else if (project.fileType === 'pdf') {
-      // Small message for PDFs
-      modalBody.innerHTML = '<p style="color:var(--accent); text-align:center;">The PDF has been opened in a new tab.</p>';
   }
 
+  // Open the modal regardless to show the reflection
   modalOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -260,7 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
   observeCards();
 });
 
-// Card reveal animation on scroll
 function observeCards() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
