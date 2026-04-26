@@ -1,9 +1,10 @@
 /* ========================================
    OOP E-Portfolio — Main JavaScript
    SPA Navigation + Modal/Lightbox System
+   Robust event-delegation + GitHub Pages friendly
    ======================================== */
 
-// ======== PROJECT DATA ========
+/* ======== PROJECT DATA ======== */
 const MIDTERM_PROJECTS = [
   {
     id: "about-me",
@@ -123,15 +124,21 @@ const FINAL_PLACEHOLDERS = [
   { title: "Final Project #3", icon: "💎" }
 ];
 
+/* ======== STATE & LOOKUPS ======== */
 let currentProject = null;
+const PROJECTS_BY_ID = MIDTERM_PROJECTS.reduce((acc, p) => { acc[p.id] = p; return acc; }, {});
 
-// ======== SAFE DOM SELECTS ========
-const pages = document.querySelectorAll('.page') || [];
-const navLinks = document.querySelectorAll('.nav-link') || [];
-const hamburger = document.getElementById('hamburger');
-const navLinksContainer = document.querySelector('.nav-links');
+/* ======== DOM SELECTORS (initialized after DOM ready) ======== */
+let pages, navLinks, hamburger, navLinksContainer;
+let midtermGrid, finalGrid;
+let modalOverlay, modalClose, modalTitle, modalTag, modalBody, modalReflection;
 
-// ======== NAVIGATION ========
+/* ======== UTIL: safe query */ 
+function $qs(selector, root = document) {
+  return root.querySelector(selector);
+}
+
+/* ======== NAVIGATION ======== */
 function navigateTo(pageId) {
   pages.forEach(p => p.classList.remove('active'));
   navLinks.forEach(l => l.classList.remove('active'));
@@ -153,37 +160,7 @@ function navigateTo(pageId) {
   if (hamburger) hamburger.classList.remove('open');
 }
 
-// Attach nav handlers safely
-navLinks.forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    const page = link.dataset.page;
-    if (page) navigateTo(page);
-  });
-});
-
-if (hamburger && navLinksContainer) {
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    navLinksContainer.classList.toggle('open');
-  });
-}
-
-// On load: navigate to hash or default to home
-window.addEventListener('load', () => {
-  const hash = window.location.hash.replace('#', '') || 'home';
-  navigateTo(hash);
-});
-
-// Navbar scroll effect
-window.addEventListener('scroll', () => {
-  const navbar = document.getElementById('navbar');
-  if (!navbar) return;
-  if (window.scrollY > 10) navbar.classList.add('scrolled');
-  else navbar.classList.remove('scrolled');
-});
-
-// ======== CARD RENDERING ========
+/* ======== CARD MARKUP ======== */
 function createProjectCard(project, index) {
   const card = document.createElement('div');
   card.className = 'project-card';
@@ -191,36 +168,19 @@ function createProjectCard(project, index) {
 
   const hasFile = project.fileType !== 'none' && project.file;
 
-  const buttonHTML = hasFile ? `
-    <button class="card-btn" data-project-id="${project.id}">
-      View Project
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
-      </svg>
-    </button>` : `
-    <span style="font-size:0.78rem; color:var(--text-muted); font-style:italic; margin-top:auto;">
-       Written exam — no digital file
-    </span>`;
-
+  // Use data attributes to reference project id (avoids closure/serialization issues)
   card.innerHTML = `
     <div class="card-icon">${project.icon}</div>
     <span class="card-type">${project.type}</span>
     <h3 class="card-title">${project.title}</h3>
     <p class="card-reflection">${project.shortReflection}</p>
-    ${buttonHTML}
+    ${hasFile ? `<button class="card-btn" data-action="view-project" data-project-id="${project.id}">View Project
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>` : `<span style="font-size:0.78rem; color:var(--text-muted); font-style:italic; margin-top:auto;">Written exam — no digital file</span>`}
   `;
-
-  if (hasFile) {
-    const button = card.querySelector('.card-btn');
-    if (button) {
-      button.addEventListener('click', (e) => {
-        e.preventDefault();
-        openModal(project);
-      });
-    }
-  }
-
   return card;
 }
 
@@ -236,36 +196,18 @@ function createPlaceholderCard(item, index) {
   return card;
 }
 
-// Render cards after DOM ready
-document.addEventListener('DOMContentLoaded', () => {
-  const midtermGrid = document.getElementById('midterm-grid');
-  const finalGrid = document.getElementById('final-grid');
-
-  if (midtermGrid) {
-    MIDTERM_PROJECTS.forEach((project, i) => {
-      midtermGrid.appendChild(createProjectCard(project, i));
-    });
+/* ======== MODAL ======== */
+function openModalById(projectId) {
+  const project = PROJECTS_BY_ID[projectId];
+  if (!project) {
+    console.warn('openModalById: project not found', projectId);
+    return;
   }
-
-  if (finalGrid) {
-    FINAL_PLACEHOLDERS.forEach((item, i) => {
-      finalGrid.appendChild(createPlaceholderCard(item, i));
-    });
-  }
-
-  observeCards();
-});
-
-// ======== MODAL SYSTEM ========
-const modalOverlay = document.getElementById('modal-overlay');
-const modalClose = document.getElementById('modal-close');
-const modalTitle = document.getElementById('modal-title');
-const modalTag = document.getElementById('modal-tag');
-const modalBody = document.getElementById('modal-body');
-const modalReflection = document.getElementById('modal-reflection');
+  openModal(project);
+}
 
 function openModal(project) {
-  if (!modalOverlay || !modalBody || !modalTitle || !modalTag || !modalReflection) return;
+  if (!modalOverlay || !modalBody) return;
 
   currentProject = project;
   modalTitle.textContent = project.title || 'Project';
@@ -274,15 +216,15 @@ function openModal(project) {
   modalBody.innerHTML = '';
 
   if (project.fileType === 'pdf' && project.file) {
+    // Create embed and visible fallback link
     const embed = document.createElement('embed');
     embed.src = project.file;
     embed.type = 'application/pdf';
-    embed.style.width = "100%";
-    embed.style.height = "60vh";
+    embed.style.width = '100%';
+    embed.style.height = '60vh';
     embed.setAttribute('aria-label', project.title || 'PDF preview');
     modalBody.appendChild(embed);
 
-    // Visible fallback link (useful when embed is blocked)
     const fallback = document.createElement('a');
     fallback.href = project.file;
     fallback.target = '_blank';
@@ -293,10 +235,20 @@ function openModal(project) {
     fallback.style.marginTop = '12px';
     modalBody.appendChild(fallback);
 
+    // If embed fails, hide it and show fallback (some browsers block inline PDFs)
     embed.addEventListener('error', () => {
       embed.style.display = 'none';
       fallback.style.display = 'inline-flex';
     });
+
+    // Also attempt to detect if embed rendered (some browsers don't fire error)
+    setTimeout(() => {
+      // If embed has zero height or no content, show fallback
+      if (embed.clientHeight === 0 || embed.offsetHeight === 0) {
+        embed.style.display = 'none';
+        fallback.style.display = 'inline-flex';
+      }
+    }, 600);
   } else if (project.fileType === 'img' && project.file) {
     const img = document.createElement('img');
     img.src = project.file;
@@ -318,18 +270,16 @@ function closeModal() {
   setTimeout(() => { if (modalBody) modalBody.innerHTML = ''; }, 300);
 }
 
-if (modalClose) modalClose.addEventListener('click', closeModal);
-if (modalOverlay) {
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) closeModal();
-  });
+/* ======== EVENT DELEGATION FOR CARDS ======== */
+function onMidtermGridClick(e) {
+  const btn = e.target.closest('[data-action="view-project"]');
+  if (!btn) return;
+  const projectId = btn.getAttribute('data-project-id');
+  if (!projectId) return;
+  openModalById(projectId);
 }
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
-});
-
-// ======== OBSERVER ANIMATIONS ========
+/* ======== OBSERVER ANIMATIONS ======== */
 function observeCards() {
   const cards = document.querySelectorAll('.project-card');
   if (!cards || cards.length === 0) return;
@@ -350,3 +300,80 @@ function observeCards() {
     observer.observe(card);
   });
 }
+
+/* ======== INITIALIZATION (DOM Ready) ======== */
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM selectors
+  pages = document.querySelectorAll('.page') || [];
+  navLinks = document.querySelectorAll('.nav-link') || [];
+  hamburger = document.getElementById('hamburger');
+  navLinksContainer = document.querySelector('.nav-links');
+
+  midtermGrid = document.getElementById('midterm-grid');
+  finalGrid = document.getElementById('final-grid');
+
+  modalOverlay = document.getElementById('modal-overlay');
+  modalClose = document.getElementById('modal-close');
+  modalTitle = document.getElementById('modal-title');
+  modalTag = document.getElementById('modal-tag');
+  modalBody = document.getElementById('modal-body');
+  modalReflection = document.getElementById('modal-reflection');
+
+  // Attach nav handlers
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const page = link.dataset.page;
+      if (page) navigateTo(page);
+    });
+  });
+
+  if (hamburger && navLinksContainer) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinksContainer.classList.toggle('open');
+    });
+  }
+
+  // Render midterm cards
+  if (midtermGrid) {
+    MIDTERM_PROJECTS.forEach((project, i) => {
+      midtermGrid.appendChild(createProjectCard(project, i));
+    });
+    // Use event delegation for view buttons (robust on GitHub Pages)
+    midtermGrid.addEventListener('click', onMidtermGridClick);
+  }
+
+  // Render final placeholders
+  if (finalGrid) {
+    FINAL_PLACEHOLDERS.forEach((item, i) => {
+      finalGrid.appendChild(createPlaceholderCard(item, i));
+    });
+  }
+
+  // Modal handlers
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  if (modalOverlay) {
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Activate initial page from hash
+  const hash = window.location.hash.replace('#', '') || 'home';
+  navigateTo(hash);
+
+  // Observe cards for reveal animation
+  observeCards();
+});
+
+/* ======== NAVBAR SCROLL EFFECT (global) ======== */
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  if (!navbar) return;
+  if (window.scrollY > 10) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+});
