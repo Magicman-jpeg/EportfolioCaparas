@@ -9,7 +9,7 @@ const MIDTERM_PROJECTS = [
     id: "about-me",
     title: "About Me",
     type: "PDF",
-    icon: "👤", // Added icons for better visuals
+    icon: "👤",
     file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/about-me.pdf",
     fileType: "pdf",
     shortReflection: "An exercise in self-realization and goal-setting.",
@@ -133,23 +133,31 @@ const hamburger = document.getElementById('hamburger');
 const navLinksContainer = document.querySelector('.nav-links');
 
 function navigateTo(pageId) {
+  // Hide all pages
   pages.forEach(p => p.classList.remove('active'));
   navLinks.forEach(l => l.classList.remove('active'));
 
+  // Show target page
   const target = document.getElementById(pageId);
   if (target) {
     target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // FIXED: Added backticks for template literal and proper selection
-  const activeLink = document.querySelector(.nav-link[data-page="${pageId}"]);
+  // FIXED: Wrapped the selector in backticks
+  const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
   if (activeLink) activeLink.classList.add('active');
 
+  // Update URL hash
   window.location.hash = pageId;
-  navLinksContainer.classList.remove('open');
-  if (hamburger) hamburger.classList.remove('open');
+
+  // Close mobile menu
+  if(navLinksContainer) navLinksContainer.classList.remove('open');
+  if(hamburger) hamburger.classList.remove('open');
 }
+
+// Make globally accessible for onclick in HTML
+window.navigateTo = navigateTo;
 
 navLinks.forEach(link => {
   link.addEventListener('click', (e) => {
@@ -166,16 +174,21 @@ if (hamburger) {
   });
 }
 
+// Handle initial hash
 window.addEventListener('load', () => {
   const hash = window.location.hash.replace('#', '') || 'home';
   navigateTo(hash);
 });
 
+// Navbar scroll effect
 window.addEventListener('scroll', () => {
   const navbar = document.getElementById('navbar');
   if (navbar) {
-    if (window.scrollY > 10) navbar.classList.add('scrolled');
-    else navbar.classList.remove('scrolled');
+    if (window.scrollY > 10) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
   }
 });
 
@@ -184,11 +197,10 @@ function createProjectCard(project, index) {
   const card = document.createElement('div');
   card.className = 'project-card';
   // FIXED: Added backticks for template literal
-  card.style.animationDelay = ${index * 80}ms;
+  card.style.animationDelay = `${index * 80}ms`;
 
   const hasFile = project.fileType !== 'none';
 
-  // FIXED: Corrected string concatenation and template literal syntax
   const buttonHTML = hasFile ? `
     <button class="card-btn" data-project-id="${project.id}">
       View Project
@@ -213,6 +225,7 @@ function createProjectCard(project, index) {
     const button = card.querySelector('.card-btn');
     button.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       openModal(project);
     });
   }
@@ -223,7 +236,8 @@ function createProjectCard(project, index) {
 function createPlaceholderCard(item, index) {
   const card = document.createElement('div');
   card.className = 'project-card placeholder-card';
-  card.style.animationDelay = ${index * 80}ms;
+  // FIXED: Added backticks for template literal
+  card.style.animationDelay = `${index * 80}ms`;
   card.innerHTML = `
     <div class="ph-icon">${item.icon}</div>
     <p class="ph-title">${item.title}</p>
@@ -267,6 +281,7 @@ function openModal(project) {
   modalTitle.textContent = project.title;
   modalTag.textContent = project.type;
   modalReflection.textContent = project.fullReflection;
+
   modalBody.innerHTML = '';
 
   if (project.fileType === 'pdf') {
