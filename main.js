@@ -10,100 +10,100 @@ const MIDTERM_PROJECTS = [
     title: "About Me",
     type: "PDF",
     icon: "👤",
-    file: "pdfs/about-me.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/about-me.pdf",
     fileType: "pdf",
     shortReflection: "An exercise in self-realization and goal-setting. Defining my identity as the Beadle of BSIT 2-3 and my journey into OOP concepts.",
-    fullReflection: "This was an exercise in self-realization and setting goals for myself. This exercise made me realize my place as the \"Beadle\" of BSIT 2-3 and the duties that come with it. I felt a rush of excitement and slight nervousness in declaring my willingness to master intricate concepts such as encapsulation and inheritance."
+    fullReflection: "This was an exercise in self-realization and setting goals for myself. This exercise made me realize my place as the \"Beadle\" of BSIT 2-3 and the duties that come with it. I[...]"
   },
   {
     id: "intro-java",
     title: "Midterm Activity #1 – Introduction to Java",
     type: "PDF",
     icon: "☕",
-    file: "pdfs/activity1-intro-java.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity1-intro-java.pdf",
     fileType: "pdf",
     shortReflection: "My first step into the Java ecosystem. Setting up the environment and writing my first program gave me a tangible sense of what it means to be a Java developer.",
-    fullReflection: "This activity marked my very first hands-on encounter with Java as a language and platform. Installing the JDK and configuring the environment felt like preparing a workspace before a big project. Writing and running my first Java program — even just a simple output — was a moment that made everything feel real. It was the beginning of understanding how Java works from the ground up, and it sparked a genuine curiosity to learn more about what this language can do."
+    fullReflection: "This activity marked my very first hands-on encounter with Java as a language and platform. Installing the JDK and configuring the environment felt like preparing a workspace [...]"
   },
   {
     id: "activity-1",
     title: "Midterm Activity #1 – Variables",
     type: "PDF",
     icon: "📦",
-    file: "pdfs/activity1-variables.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity1-variables.pdf",
     fileType: "pdf",
     shortReflection: "Laying the cornerstone of my Java understanding. Grasping the relationship between JDK, JRE, and JVM made 'Write Once, Run Anywhere' more than just a slogan.",
-    fullReflection: "The exercise felt like laying down the cornerstone of my new home in programming. There was a sense of satisfaction and comprehension of how everything fits together when I comprehended the relationship between JDK, JRE, and JVM. It was not simply memorizing definitions; it was about grasping concepts and having them click into place."
+    fullReflection: "The exercise felt like laying down the cornerstone of my new home in programming. There was a sense of satisfaction and comprehension of how everything fits together when I co[...]"
   },
   {
     id: "activity-2",
     title: "Midterm Activity #2 – Operators",
     type: "PDF",
     icon: "⚙️",
-    file: "pdfs/activity2-operators.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity2-operators.pdf",
     fileType: "pdf",
     shortReflection: "Bitwise operators and complex unary incrementations tested my focus. The moment ++x matched console output was a true breakthrough in understanding code logic.",
-    fullReflection: "This assignment challenged my ability to focus and stay persistent. Using bitwise operators and complex unary incrementations made this assignment feel like a challenge that needed to be solved. There was definitely a certain moment where it became clear that my manually calculated values for expressions like ++x actually corresponded to the output displayed on the console."
+    fullReflection: "This assignment challenged my ability to focus and stay persistent. Using bitwise operators and complex unary incrementations made this assignment feel like a challenge that n[...]"
   },
   {
     id: "seatwork-2",
     title: "Midterm Seatwork #2 – Smart Wallet System",
     type: "PDF",
     icon: "💳",
-    file: "pdfs/seatwork2-wallet.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/seatwork2-wallet.pdf",
     fileType: "pdf",
     shortReflection: "A practical system using if-else logic for transaction validation. Watching the Transaction Count update correctly gave me a real sense of developer responsibility.",
-    fullReflection: "This task was extremely practical. Putting up the if-else logic for checking the minimum amount, as well as the limit per transaction, gave me the responsibility of doing my job correctly. After all, this code should ensure the safety of the user. Seeing the proper increase in 'Transaction Count' was satisfying."
+    fullReflection: "This task was extremely practical. Putting up the if-else logic for checking the minimum amount, as well as the limit per transaction, gave me the responsibility of doing my j[...]"
   },
   {
     id: "seatwork-3",
     title: "Midterm Seatwork #3 – Student Age Analyzer",
     type: "PDF",
     icon: "🎓",
-    file: "pdfs/seatwork3-age.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/seatwork3-age.pdf",
     fileType: "pdf",
     shortReflection: "My first real experience with modularity. Separating age logic into a user-defined function made the code neater and showed me the power of organized programming.",
-    fullReflection: "Doing this was somehow an experience of me organizing my thoughts. It helped that I separated the age logic to a separate user-defined function, and there was this feeling that my code is getting 'neater'. The first time I experienced modularity, and how liberating it was to know that any changes would require me to look only in one place."
+    fullReflection: "Doing this was somehow an experience of me organizing my thoughts. It helped that I separated the age logic to a separate user-defined function, and there was this feeling tha[...]"
   },
   {
     id: "activity-3",
     title: "Midterm Activity #3 – Basic ATM System",
     type: "PDF",
     icon: "🏧",
-    file: "pdfs/activity3-atm.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity3-atm.pdf",
     fileType: "pdf",
     shortReflection: "Building a 'living' program with do-while loops. Each successful transaction felt like a triumph — watching the balance update from 5,000 to 6,000 was rewarding.",
-    fullReflection: "The process of making this project was like finding a beat in the user's experience. When I added the do-while loop, I had the impression of creating a 'living' code. Each time I clicked 'Yes' to conduct another transaction and noticed that my balance changed, it was a triumph for me."
+    fullReflection: "The process of making this project was like finding a beat in the user's experience. When I added the do-while loop, I had the impression of creating a 'living' code. Each tim[...]"
   },
   {
     id: "activity-4",
     title: "Midterm Activity #4 – Scholarship Qualification System",
     type: "PDF",
     icon: "📋",
-    file: "pdfs/activity4-scholarship.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity4-scholarship.pdf",
     fileType: "pdf",
-    shortReflection: "Combining entrance exam scores and interview results into a qualification system. The logic tree distinguishing 'Waitlisted' from 'Admitted with Scholarship' was my proudest achievement.",
-    fullReflection: "The entire process was similar to that of a judge or assessor. The amount of logic required to combine entrance exam scores and interviews was immense. I was proud of myself when I realized that the program could distinguish between a 'Waitlisted' student and an 'Admitted with Scholarship' student."
+    shortReflection: "Combining entrance exam scores and interview results into a qualification system. The logic tree distinguishing 'Waitlisted' from 'Admitted with Scholarship' was my proudest [...]",
+    fullReflection: "The entire process was similar to that of a judge or assessor. The amount of logic required to combine entrance exam scores and interviews was immense. I was proud of myself w[...]"
   },
   {
     id: "activity-5",
     title: "Midterm Activity #5 – Personal Expense Tracker",
     type: "PDF",
     icon: "💰",
-    file: "pdfs/activity5-expense.pdf",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity5-expense.pdf",
     fileType: "pdf",
     shortReflection: "My most complete project yet. Adding Remaining Balance and Overspend features felt like true developer creativity — presenting useful financial data to the user.",
-    fullReflection: "This was a milestone in my midterm adventure. This was the most personalized and complete project I have done yet. The sense of creativity that comes through when adding the 'Remaining Balance' and 'Overspend' functionalities to the program is very real indeed."
+    fullReflection: "This was a milestone in my midterm adventure. This was the most personalized and complete project I have done yet. The sense of creativity that comes through when adding the '[...]"
   },
   {
     id: "quiz-1",
     title: "Midterm Quiz #1",
     type: "PNG",
     icon: "📝",
-    file: "images/quiz1.png",
+    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/images/quiz1.png",
     fileType: "img",
     shortReflection: "OOP demands a special kind of thinking. Tracing multiple classes and applying inheritance rules was challenging — but it taught me patience and attention to detail.",
-    fullReflection: "While working through this quiz, I came to realize that OOP demands a special kind of thinking, unlike basic procedural programming. The biggest challenge was dealing with a large number of classes that needed to be traced. This experience has proven to me that OOP requires patience and careful examination."
+    fullReflection: "While working through this quiz, I came to realize that OOP demands a special kind of thinking, unlike basic procedural programming. The biggest challenge was dealing with a [...]"
   },
   {
     id: "midterm-oop",
@@ -113,7 +113,7 @@ const MIDTERM_PROJECTS = [
     file: null,
     fileType: "none",
     shortReflection: "True/false, programming, and multiple choice. Writing code on paper without testing was a real challenge, but the experience deepened my understanding of Java's processes.",
-    fullReflection: "Based on the experience of taking the test on OOP, the first page had true or false statements. In the programming section, I used a wrong label or inappropriate syntax occasionally — there was no possibility of testing the code since it was only written on paper. Most importantly, I have learned from the experience."
+    fullReflection: "Based on the experience of taking the test on OOP, the first page had true or false statements. In the programming section, I used a wrong label or inappropriate syntax occas[...]"
   }
 ];
 
