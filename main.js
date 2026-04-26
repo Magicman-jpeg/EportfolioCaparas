@@ -221,6 +221,7 @@ function createProjectCard(project, index) {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      console.log('✅ Button clicked for project:', project.id);
       openModal(project);
     });
   }
@@ -261,6 +262,7 @@ const modalBody = document.getElementById('modal-body');
 const modalReflection = document.getElementById('modal-reflection');
 
 function openModal(project) {
+  console.log('🔄 openModal called with project:', project.id);
   currentProject = project;
   
   modalTitle.textContent = project.title;
@@ -271,6 +273,8 @@ function openModal(project) {
   modalBody.innerHTML = '';
 
   if (project.fileType === 'pdf') {
+    console.log('📄 Loading PDF from:', project.file);
+    
     const embed = document.createElement('embed');
     embed.src = project.file;
     embed.type = 'application/pdf';
@@ -287,23 +291,34 @@ function openModal(project) {
     modalBody.appendChild(fallback);
 
     embed.addEventListener('error', () => {
+      console.error('❌ PDF failed to load from:', project.file);
       embed.style.display = 'none';
       fallback.style.display = 'inline-flex';
     });
 
   } else if (project.fileType === 'img') {
+    console.log('🖼️ Loading image from:', project.file);
+    
     const img = document.createElement('img');
     img.src = project.file;
     img.alt = project.title;
     img.style.cssText = 'max-width:100%; max-height:65vh; object-fit:contain; border-radius:8px;';
+    
+    img.addEventListener('error', () => {
+      console.error('❌ Image failed to load from:', project.file);
+      img.innerHTML = '⚠️ Image could not be loaded';
+    });
+    
     modalBody.appendChild(img);
   }
 
+  console.log('📺 Modal opened for:', project.title);
   modalOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
+  console.log('❌ Modal closed');
   modalOverlay.classList.remove('open');
   document.body.style.overflow = '';
   // Clear body after animation
@@ -337,3 +352,6 @@ function observeCards() {
 }
 
 observeCards();
+
+console.log('✅ Portfolio script loaded successfully');
+console.log('📊 Projects loaded:', MIDTERM_PROJECTS.length);
