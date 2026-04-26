@@ -133,11 +133,6 @@ let pages, navLinks, hamburger, navLinksContainer;
 let midtermGrid, finalGrid;
 let modalOverlay, modalClose, modalTitle, modalTag, modalBody, modalReflection;
 
-/* ======== UTIL: safe query */ 
-function $qs(selector, root = document) {
-  return root.querySelector(selector);
-}
-
 /* ======== NAVIGATION ======== */
 function navigateTo(pageId) {
   pages.forEach(p => p.classList.remove('active'));
@@ -168,7 +163,6 @@ function createProjectCard(project, index) {
 
   const hasFile = project.fileType !== 'none' && project.file;
 
-  // Use data attributes to reference project id (avoids closure/serialization issues)
   card.innerHTML = `
     <div class="card-icon">${project.icon}</div>
     <span class="card-type">${project.type}</span>
@@ -216,7 +210,6 @@ function openModal(project) {
   modalBody.innerHTML = '';
 
   if (project.fileType === 'pdf' && project.file) {
-    // Create embed and visible fallback link
     const embed = document.createElement('embed');
     embed.src = project.file;
     embed.type = 'application/pdf';
@@ -235,15 +228,12 @@ function openModal(project) {
     fallback.style.marginTop = '12px';
     modalBody.appendChild(fallback);
 
-    // If embed fails, hide it and show fallback (some browsers block inline PDFs)
     embed.addEventListener('error', () => {
       embed.style.display = 'none';
       fallback.style.display = 'inline-flex';
     });
 
-    // Also attempt to detect if embed rendered (some browsers don't fire error)
     setTimeout(() => {
-      // If embed has zero height or no content, show fallback
       if (embed.clientHeight === 0 || embed.offsetHeight === 0) {
         embed.style.display = 'none';
         fallback.style.display = 'inline-flex';
@@ -303,7 +293,6 @@ function observeCards() {
 
 /* ======== INITIALIZATION (DOM Ready) ======== */
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM selectors
   pages = document.querySelectorAll('.page') || [];
   navLinks = document.querySelectorAll('.nav-link') || [];
   hamburger = document.getElementById('hamburger');
@@ -319,7 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
   modalBody = document.getElementById('modal-body');
   modalReflection = document.getElementById('modal-reflection');
 
-  // Attach nav handlers
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -335,23 +323,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Render midterm cards
   if (midtermGrid) {
     MIDTERM_PROJECTS.forEach((project, i) => {
       midtermGrid.appendChild(createProjectCard(project, i));
     });
-    // Use event delegation for view buttons (robust on GitHub Pages)
     midtermGrid.addEventListener('click', onMidtermGridClick);
   }
 
-  // Render final placeholders
   if (finalGrid) {
     FINAL_PLACEHOLDERS.forEach((item, i) => {
       finalGrid.appendChild(createPlaceholderCard(item, i));
     });
   }
 
-  // Modal handlers
   if (modalClose) modalClose.addEventListener('click', closeModal);
   if (modalOverlay) {
     modalOverlay.addEventListener('click', (e) => {
@@ -362,11 +346,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') closeModal();
   });
 
-  // Activate initial page from hash
   const hash = window.location.hash.replace('#', '') || 'home';
   navigateTo(hash);
 
-  // Observe cards for reveal animation
   observeCards();
 });
 
