@@ -1,11 +1,7 @@
-/* ========================================
-   OOP E-Portfolio — Main JavaScript (fixed)
-   - Keeps full reflections
-   - Preflight HEAD checks before embedding files
-   - Robust event delegation and graceful fallbacks
-   ======================================== */
+/* main.js
+   Robust modal + preserved reflections + reliable click handling
+*/
 
-/* ======== PROJECT DATA (full entries preserved) ======== */
 const MIDTERM_PROJECTS = [
   {
     id: "about-me",
@@ -125,38 +121,26 @@ const FINAL_PLACEHOLDERS = [
   { title: "Final Project #3", icon: "💎" }
 ];
 
-/* ======== STATE & LOOKUPS ======== */
 let currentProject = null;
 const PROJECTS_BY_ID = MIDTERM_PROJECTS.reduce((acc, p) => { acc[p.id] = p; return acc; }, {});
 
-/* ======== DOM SELECTORS (initialized after DOM ready) ======== */
 let pages, navLinks, hamburger, navLinksContainer;
 let midtermGrid, finalGrid;
 let modalOverlay, modalClose, modalTitle, modalTag, modalBody, modalReflection;
 
-/* ======== NAVIGATION ======== */
 function navigateTo(pageId) {
   pages.forEach(p => p.classList.remove('active'));
   navLinks.forEach(l => l.classList.remove('active'));
-
   const target = document.getElementById(pageId);
-  if (target) {
-    target.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
+  if (target) target.classList.add('active');
   const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
   if (activeLink) activeLink.classList.add('active');
-
-  if (window.location.hash.replace('#', '') !== pageId) {
-    window.location.hash = pageId;
-  }
-
+  if (window.location.hash.replace('#', '') !== pageId) window.location.hash = pageId;
   if (navLinksContainer) navLinksContainer.classList.remove('open');
   if (hamburger) hamburger.classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ======== CARD MARKUP ======== */
 function createProjectCard(project, index) {
   const card = document.createElement('div');
   card.className = 'project-card';
@@ -164,17 +148,17 @@ function createProjectCard(project, index) {
 
   const hasFile = project.fileType !== 'none' && project.file;
 
+  // create button element programmatically to ensure attributes are correct
+  const btnHtml = hasFile ? `<button type="button" class="card-btn" data-action="view-project" data-project-id="${project.id}" aria-label="View ${escapeHtml(project.title)}">View Project
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>` : `<span style="font-size:0.78rem; color:var(--text-muted); font-style:italic; margin-top:auto;">Written exam — no digital file</span>`;
+
   card.innerHTML = `
     <div class="card-icon">${project.icon}</div>
     <span class="card-type">${project.type}</span>
     <h3 class="card-title">${project.title}</h3>
     <p class="card-reflection">${project.shortReflection}</p>
-    ${hasFile ? `<button class="card-btn" data-action="view-project" data-project-id="${project.id}">View Project
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </button>` : `<span style="font-size:0.78rem; color:var(--text-muted); font-style:italic; margin-top:auto;">Written exam — no digital file</span>`}
+    ${btnHtml}
   `;
   return card;
 }
@@ -191,16 +175,6 @@ function createPlaceholderCard(item, index) {
   return card;
 }
 
-/* ======== MODAL ======== */
-async function openModalById(projectId) {
-  const project = PROJECTS_BY_ID[projectId];
-  if (!project) {
-    console.warn('openModalById: project not found', projectId);
-    return;
-  }
-  await openModal(project);
-}
-
 async function urlExists(url) {
   try {
     const res = await fetch(url, { method: 'HEAD' });
@@ -211,17 +185,26 @@ async function urlExists(url) {
   }
 }
 
+async function openModalById(projectId) {
+  const project = PROJECTS_BY_ID[projectId];
+  if (!project) {
+    console.warn('openModalById: project not found', projectId);
+    return;
+  }
+  await openModal(project);
+}
+
 async function openModal(project) {
   if (!modalOverlay || !modalBody) return;
-
   currentProject = project;
   modalTitle.textContent = project.title || 'Project';
   modalTag.textContent = project.type || '';
   modalReflection.textContent = project.fullReflection || '';
   modalBody.innerHTML = '';
 
-  if (project.fileType === 'pdf' && project.file) {
+  if (project.file && project.fileType === 'pdf') {
     const url = new URL(project.file, window.location.href).href;
+    console.log('Attempting to load PDF', url);
     const exists = await urlExists(url);
     if (exists) {
       const embed = document.createElement('embed');
@@ -252,8 +235,9 @@ async function openModal(project) {
           embed.style.display = 'none';
           fallback.style.display = 'inline-flex';
         }
-      }, 600);
+      }, 700);
     } else {
+      console.warn('File not found or blocked', url);
       modalBody.innerHTML = `
         <p style="color:var(--text-dim); margin-bottom:8px;">
           Preview not available. The file could not be found or is blocked by the server.
@@ -267,7 +251,7 @@ async function openModal(project) {
       fallback.textContent = '📂 Try to open file in new tab';
       modalBody.appendChild(fallback);
     }
-  } else if (project.fileType === 'img' && project.file) {
+  } else if (project.file && project.fileType === 'img') {
     const url = new URL(project.file, window.location.href).href;
     const exists = await urlExists(url);
     if (exists) {
@@ -294,20 +278,27 @@ function closeModal() {
   setTimeout(() => { if (modalBody) modalBody.innerHTML = ''; }, 300);
 }
 
-/* ======== EVENT DELEGATION FOR CARDS ======== */
 function onMidtermGridClick(e) {
+  // Use closest to support clicks on inner SVG/text
   const btn = e.target.closest('[data-action="view-project"], .card-btn');
   if (!btn) return;
   const projectId = btn.getAttribute('data-project-id') || btn.dataset.projectId;
   if (!projectId) return;
+  console.log('View Project clicked', projectId);
   openModalById(projectId);
 }
 
-/* ======== OBSERVER ANIMATIONS ======== */
+// small helper to escape HTML for aria-label safety
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, function (m) {
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
+  });
+}
+
 function observeCards() {
   const cards = document.querySelectorAll('.project-card');
   if (!cards || cards.length === 0) return;
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -316,7 +307,6 @@ function observeCards() {
       }
     });
   }, { threshold: 0.1 });
-
   cards.forEach(card => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(20px)';
@@ -325,10 +315,9 @@ function observeCards() {
   });
 }
 
-/* ======== INITIALIZATION (DOM Ready) ======== */
 document.addEventListener('DOMContentLoaded', () => {
-  pages = document.querySelectorAll('.page') || [];
-  navLinks = document.querySelectorAll('.nav-link') || [];
+  pages = Array.from(document.querySelectorAll('.page'));
+  navLinks = Array.from(document.querySelectorAll('.nav-link'));
   hamburger = document.getElementById('hamburger');
   navLinksContainer = document.querySelector('.nav-links');
 
@@ -358,9 +347,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (midtermGrid) {
+    // populate cards
     MIDTERM_PROJECTS.forEach((project, i) => {
       midtermGrid.appendChild(createProjectCard(project, i));
     });
+    // attach delegated click listener
     midtermGrid.addEventListener('click', onMidtermGridClick);
   }
 
@@ -386,7 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
   observeCards();
 });
 
-/* ======== NAVBAR SCROLL EFFECT (global) ======== */
 window.addEventListener('scroll', () => {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
