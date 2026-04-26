@@ -10,100 +10,101 @@ const MIDTERM_PROJECTS = [
     title: "About Me",
     type: "PDF",
     icon: "👤",
-    file: "./pdfs/about-me.pdf",
+    file: "pdfs/about-me.pdf",
     fileType: "pdf",
     shortReflection: "An exercise in self-realization and goal-setting.",
-    fullReflection: "This was an exercise in self-realization and setting goals for myself. This exercise made me realize my place as the \"Beadle\" of BSIT 2-3 and the duties that come with it..."
+    fullReflection: " This was an exercise in self-realization and setting goals for myself. This exercise made me realize my place as the "Beadle" of BSIT 2-3 and the duties that come with it. I felt a rush of excitement and slight nervousness in declaring my willingness to master intricate concepts such as encapsulation and inheritance. The goal of the assignment was not only to define one's identity but also one's place in the world as a soon-to-be computer programmer who can elevate problem-solving to an art form."
   },
   {
     id: "intro-java",
     title: "Midterm Activity #1 – Introduction to Java",
     type: "PDF",
     icon: "☕",
-    file: "./pdfs/activity1-intro-java.pdf",
+    file: "pdfs/activity1-intro-java.pdf",
     fileType: "pdf",
     shortReflection: "My first step into the Java ecosystem.",
-    fullReflection: "This activity marked my very first hands-on encounter with Java as a language and platform..."
+    fullReflection: "This activity can best be described as mind-boggling. The visualization of Stack and Heap seemed to reveal what was previously thought of as intangible. That particular moment when it became clear that acc3 = acc1 did not create any new object, but merely referred to the old object was a major breakthrough. This was a significant step towards becoming more than a coder; now I know how computers work on a much deeper level.
+"
   },
   {
     id: "activity-1",
     title: "Midterm Activity #1 – Variables",
     type: "PDF",
     icon: "📦",
-    file: "./pdfs/activity1-variables.pdf",
+    file: "pdfs/activity1-variables.pdf",
     fileType: "pdf",
     shortReflection: "Laying the cornerstone of my Java understanding.",
-    fullReflection: "The exercise felt like laying down the cornerstone of my new home in programming..."
+    fullReflection: "Reflection: The exercise felt like laying down the cornerstone of my new home in programming. There was a sense of satisfaction and comprehension of how everything fits together when I comprehended the relationship between JDK, JRE, and JVM. It was not simply memorizing definitions; it was about grasping concepts and having them click into place. I could finally understand why Java was so revolutionary — the concept of Write Once, Run Anywhere became more than just marketing hype."
   },
   {
     id: "activity-2",
     title: "Midterm Activity #2 – Operators",
     type: "PDF",
     icon: "➕",
-    file: "./pdfs/activity2-operators.pdf",
+    file: "pdfs/activity2-operators.pdf",
     fileType: "pdf",
     shortReflection: "Bitwise operators and complex unary incrementations.",
-    fullReflection: "This assignment challenged my ability to focus and stay persistent..."
+    fullReflection: "This assignment challenged my ability to focus and stay persistent. Using bitwise operators and complex unary incrementations made this assignment feel like a challenge that needed to be solved. There was definitely a certain moment where it became clear that my manually calculated values for expressions like ++x actually corresponded to the output displayed on the console. It was an enlightening experience that taught me that all details matter when coding and finding the logic of the programming process is extremely rewarding."
   },
   {
     id: "seatwork-2",
     title: "Midterm Seatwork #2 – Smart Wallet System",
     type: "PDF",
     icon: "💳",
-    file: "./pdfs/seatwork2-wallet.pdf",
+    file: "pdfs/seatwork2-wallet.pdf",
     fileType: "pdf",
     shortReflection: "A practical system using if-else logic for transaction validation.",
-    fullReflection: "This task was extremely practical. Putting up the if-else logic for checking the minimum amount..."
+    fullReflection: "This task was extremely "worldly", which is another way of saying I feel it's very practical. Putting up the if-else logic for checking the minimum amount, as well as the limit per transaction, gave me the responsibility of doing my job correctly. After all, this code should ensure the safety of the user and not give him a reason for complaining because it failed its job. Seeing the proper increase in "Transaction Count" was satisfying."
   },
   {
     id: "seatwork-3",
     title: "Midterm Seatwork #3 – Student Age Analyzer",
     type: "PDF",
     icon: "📊",
-    file: "./pdfs/seatwork3-age.pdf",
+    file: "pdfs/seatwork3-age.pdf",
     fileType: "pdf",
     shortReflection: "My first real experience with modularity.",
-    fullReflection: "Doing this was somehow an experience of me organizing my thoughts..."
+    fullReflection: "Doing this was somehow an experience of me organizing my thoughts. It helped that I separated the age logic to a separate user-defined function, and there was this feeling that my code is getting "neater". The first time I experienced modularity, and how liberating it was to know that any changes that need to be made would require me to look only in one place instead of scouring through all my codes."
   },
   {
     id: "activity-3",
     title: "Midterm Activity #3 – Basic ATM System",
     type: "PDF",
     icon: "🏧",
-    file: "./pdfs/activity3-atm.pdf",
+    file: "pdfs/activity3-atm.pdf",
     fileType: "pdf",
     shortReflection: "Building a 'living' program with do-while loops.",
-    fullReflection: "The process of making this project was like finding a beat in the user's experience..."
+    fullReflection: "The process of making this project was like finding a beat in the user’s experience. When I added the do-while loop, I had the impression of creating a “living” code. Each time I clicked “Yes” to conduct another transaction and noticed that my balance changed from 5,000 to 6,000, it was a triumph for me. The best part was the way the “Financial Summary” appeared after the “Deposit successful!” message."
   },
   {
     id: "activity-4",
     title: "Midterm Activity #4 – Scholarship Qualification System",
     type: "PDF",
     icon: "🎓",
-    file: "./pdfs/activity4-scholarship.pdf",
+    file: "pdfs/activity4-scholarship.pdf",
     fileType: "pdf",
     shortReflection: "Combining entrance exam scores and interview results.",
-    fullReflection: "The entire process was similar to that of a judge or assessor..."
+    fullReflection: "The entire process was similar to that of a judge or assessor. The amount of logic required to combine entrance exam scores and interviews was immense. I was proud of myself when I realized that the program could distinguish between a “Waitlisted” student and an “Admitted with Scholarship” student. It was a tricky “logic tree,” but it was a success to reach the “Enrollment Assessment Result."
   },
   {
     id: "activity-5",
     title: "Midterm Activity #5 – Personal Expense Tracker",
     type: "PDF",
     icon: "💰",
-    file: "./pdfs/activity5-expense.pdf",
+    file: "pdfs/activity5-expense.pdf",
     fileType: "pdf",
     shortReflection: "My most complete project yet.",
-    fullReflection: "This was a milestone in my midterm adventure. This was the most personalized and complete project..."
+    fullReflection: "This was a milestone in my midterm adventure. This was the most personalized and complete project I have done yet. The sense of creativity that comes through when adding the "Remaining Balance" and "Overspend" functionalities to the program is very real indeed. Getting the output "Total Expenses," and "Budget Limit" on the screen felt like a true developer, creating useful information for the user.
   },
   {
     id: "quiz-1",
     title: "Midterm Quiz #1",
     type: "PNG",
     icon: "📝",
-    file: "./images/quiz1.png",
+    file: "images/quiz1.png",
     fileType: "img",
     shortReflection: "OOP demands a special kind of thinking.",
-    fullReflection: "While working through this quiz, I came to realize that OOP demands a special kind of thinking..."
+    fullReflection: "While working through this quiz, I came to realize that Object-Oriented Programming (OOP) demands some special kind of thinking process, unlike basic procedural programming. It is not enough to write code; one should be able to imagine how different objects will interact inside a certain application. For me personally, the biggest challenge was dealing with a large number of classes that needed to be traced. Sometimes, it seemed easy to imagine a flow of logic, but implementing it using rules of inheritance and encapsulation was tricky. The questions I failed to solve reflect my weaknesses in OOP. In particular, it became apparent to me that I often rushed when analyzing problems. As a result, I made some minor mistakes. At the same time, solving several difficult problems allowed me to view the topic from a slightly different angle. In conclusion, I can say that this experience has proven to me that OOP requires patience and careful examination. Although I consider myself satisfied with passing the test, 11 points that I have lost indicate areas to improve. Therefore, in the future, I would like to pay attention to manual code tracing and object relations."
   },
   {
     id: "midterm-oop",
@@ -113,14 +114,8 @@ const MIDTERM_PROJECTS = [
     file: null,
     fileType: "none",
     shortReflection: "True/false, programming, and multiple choice.",
-    fullReflection: "Based on the experience of taking the test on OOP, the first page had true or false statements..."
+    fullReflection: "Based on the experience of taking the test on OOP, the first page had true or false statements. It was difficult for me to give a definite answer because sometimes I had trouble differentiating between the concepts which were true and which were false, thus making me feel unsure about receiving high marks. But there was nothing to worry about because I made an effort by reading about and reviewing this course. In the programming section, sometimes I used a wrong label, or used a syntax that was inappropriate. There was no possibility of testing the code since this was only written on paper. As far as multiple choice question, I felt more comfortable but nevertheless, coding was a challenge to test my knowledge of the process. Most importantly, I have learned from the experience. Though my progress is slow, there is a greater likelihood of realizing my full potential as there are many chances for learning and understanding the processes in Java programming language."
   }
-];
-
-const FINAL_PLACEHOLDERS = [
-  { title: "Final Project #1", icon: "🚀" },
-  { title: "Final Project #2", icon: "🛠️" },
-  { title: "Final Project #3", icon: "✨" },
 ];
 
 let currentProject = null;
