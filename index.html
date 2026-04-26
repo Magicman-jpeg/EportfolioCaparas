@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OOP E-Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <span class="logo-bracket">{</span>
+        <span class="logo-text">OOP</span>
+        <span class="logo-bracket">}</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+        <li><a href="#midterm" class="nav-link" data-page="midterm">Midterm</a></li>
+        <li><a href="#final" class="nav-link" data-page="final">Final</a></li>
+        <li><a href="#contact" class="nav-link" data-page="contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- PAGES WRAPPER -->
+  <main id="main">
+
+    <!-- ===== HOME PAGE ===== -->
+    <section id="home" class="page active">
+      <div class="home-bg">
+        <div class="grid-lines"></div>
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+      </div>
+      <div class="home-content">
+        <div class="home-badge">Object-Oriented Programming · BSIT 2-3</div>
+        <h1 class="home-name">
+          <span class="line-reveal" style="--d:0ms">Ederlyn</span>
+          <span class="line-reveal accent-text" style="--d:150ms">Caparas</span>
+        </h1>
+        <div class="home-meta">
+          <span class="meta-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            PUP Sta.Mesa
+          </span>
+          <span class="meta-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            2nd Year · 2nd Semester
+          </span>
+        </div>
+        <p class="home-intro">
+          This e-portfolio documents my journey through <strong>Object-Oriented Programming</strong>, 
+          showcasing the midterm outputs that shaped my understanding of Java — from fundamental 
+          variables to complex OOP systems. Each project reflects a milestone in my evolution 
+          as a programmer.
+        </p>
+        <div class="home-cta">
+          <button class="btn-primary" onclick="navigateTo('midterm')">
+            View Midterm Work
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <button class="btn-ghost" onclick="navigateTo('contact')">Get in Touch</button>
+        </div>
+        <div class="home-stats">
+          <div class="stat">
+            <span class="stat-num">11</span>
+            <span class="stat-label">Projects</span>
+          </div>
+          <div class="stat-div"></div>
+          <div class="stat">
+            <span class="stat-num">OOP</span>
+            <span class="stat-label">Focus</span>
+          </div>
+          <div class="stat-div"></div>
+          <div class="stat">
+            <span class="stat-num">Java</span>
+            <span class="stat-label">Language</span>
+          </div>
+        </div>
+      </div>
+      <div class="home-visual">
+        <div class="code-block">
+          <div class="code-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            <span class="code-filename">Portfolio.java</span>
+          </div>
+          <pre class="code-body"><code><span class="kw">public class</span> <span class="cls">Portfolio</span> {
+  
+  <span class="kw">private</span> String name;
+  <span class="kw">private</span> String course;
+  <span class="kw">private</span> List&lt;Project&gt; projects;
+
+  <span class="kw">public</span> <span class="cls">Portfolio</span>() {
+    <span class="kw">this</span>.name = <span class="str">"Ederlyn Caparas"</span>;
+    <span class="kw">this</span>.course = <span class="str">"OOP"</span>;
+    <span class="kw">this</span>.projects = <span class="kw">new</span> ArrayList&lt;&gt;();
+  }
+
+  <span class="kw">public void</span> showcase() {
+    projects.forEach(p -&gt;
+      p.display()
+    );
+  }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MIDTERM PAGE ===== -->
+    <section id="midterm" class="page">
+      <div class="page-bg">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-3"></div>
+      </div>
+      <div class="page-inner">
+        <div class="page-header">
+          <div class="page-tag">Midterm Outputs</div>
+          <h2 class="page-title">Object-Oriented <br><span class="accent-text">Programming</span></h2>
+          <p class="page-subtitle">A collection of exercises and projects that built my foundation in Java OOP — from environment setup to full system design.</p>
+        </div>
+
+        <div class="projects-grid" id="midterm-grid">
+          <!-- Cards injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FINAL PAGE ===== -->
+    <section id="final" class="page">
+      <div class="page-bg">
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+      </div>
+      <div class="page-inner">
+        <div class="page-header">
+          <div class="page-tag">Final Outputs</div>
+          <h2 class="page-title">Coming <br><span class="accent-text">Soon</span></h2>
+          <p class="page-subtitle">Final period outputs will be showcased here. Check back as the semester progresses.</p>
+        </div>
+
+        <div class="projects-grid" id="final-grid">
+          <!-- Final placeholder cards injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT PAGE ===== -->
+    <section id="contact" class="page">
+      <div class="page-bg">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+      </div>
+      <div class="page-inner contact-inner">
+        <div class="page-header">
+          <div class="page-tag">Get in Touch</div>
+          <h2 class="page-title">Let's <span class="accent-text">Connect</span></h2>
+          <p class="page-subtitle">Have a question or want to collaborate? Feel free to reach out.</p>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-info">
+            <span class="contact-label">Email Address</span>
+            <a href="mailto:ederlyncaparas@gmail.com" class="contact-value">ederlyncaparas@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </div>
+          <div class="contact-info">
+            <span class="contact-label">GitHub Repository</span>
+            <a href="https://github.com/ederlyncaparas-jpg/EportfolioCaparas" target="_blank" class="contact-value">EportfolioCaparas</a>
+          </div>
+        </div>
+
+        <div class="contact-note">
+          <p>This portfolio was built as part of the <strong>Object-Oriented Programming</strong> midterm requirement at <strong>PUP Sta.Mesa</strong>. All projects showcase Java programming concepts learned throughout the course.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-tag" id="modal-tag">Project</span>
+          <h3 class="modal-title" id="modal-title">Project Title</h3>
+        </div>
+        <button class="modal-close" id="modal-close" aria-label="Close modal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- embed/img injected here -->
+      </div>
+      <div class="modal-footer">
+        <p class="modal-reflection" id="modal-reflection"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
