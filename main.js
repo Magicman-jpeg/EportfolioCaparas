@@ -1,9 +1,7 @@
 /* ========================================
    OOP E-Portfolio — Main JavaScript
-   SPA Navigation + Modal/Lightbox System
    ======================================== */
 
-// ======== PROJECT DATA ========
 const MIDTERM_PROJECTS = [
   {
     id: "about-me",
@@ -14,16 +12,6 @@ const MIDTERM_PROJECTS = [
     fileType: "pdf",
     shortReflection: "An exercise in self-realization and goal-setting.",
     fullReflection: "This was an exercise in self-realization and setting goals for myself. This exercise made me realize my place as the \"Beadle\" of BSIT 2-3 and the duties that come with it. I felt a rush of excitement and slight nervousness in declaring my willingness to master intricate concepts such as encapsulation and inheritance. The goal of the assignment was not only to define one's identity but also one's place in the world as a soon-to-be computer programmer who can elevate problem-solving to an art form."
-  },
-  {
-    id: "intro-java",
-    title: "Midterm Activity #1 – Introduction to Java",
-    type: "PDF",
-    icon: "☕",
-    file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity1-intro-java.pdf",
-    fileType: "pdf",
-    shortReflection: "My first step into the Java ecosystem.",
-    fullReflection: "This activity marked my very first hands-on encounter with Java as a language and platform. Understanding the basics of Java syntax and structure opened doors to more advanced concepts I would encounter later in the course."
   },
   {
     id: "activity-1",
@@ -53,7 +41,7 @@ const MIDTERM_PROJECTS = [
     file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/seatwork2-wallet.pdf",
     fileType: "pdf",
     shortReflection: "A practical system using if-else logic for transaction validation.",
-    fullReflection: "This task was extremely practical. Putting up the if-else logic for checking the minimum amount, as well as the limit per transaction, gave me the responsibility of doing my job correctly. After all, this code should ensure the safety of the user and not give him a reason for complaining because it failed its job. Seeing the proper increase in \"Transaction Count\" was satisfying."
+    fullReflection: "This task was extremely \"worldly\", which is another way of saying I feel it's very practical. Putting up the if-else logic for checking the minimum amount, as well as the limit per transaction, gave me the responsibility of doing my job correctly. After all, this code should ensure the safety of the user and not give him a reason for complaining because it failed its job. Seeing the proper increase in \"Transaction Count\" was satisfying."
   },
   {
     id: "seatwork-3",
@@ -73,7 +61,7 @@ const MIDTERM_PROJECTS = [
     file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity3-atm.pdf",
     fileType: "pdf",
     shortReflection: "Building a 'living' program with do-while loops.",
-    fullReflection: "The process of making this project was like finding a beat in the user's experience. When I added the do-while loop, I had the impression of creating a \"living\" code. Each time I clicked \"Yes\" to conduct another transaction and noticed that my balance changed from 5,000 to 6,000, it was a triumph for me. The best part was the way the \"Financial Summary\" appeared after the \"Deposit successful!\" message."
+    fullReflection: "The process of making this project was like finding a beat in the user’s experience. When I added the do-while loop, I had the impression of creating a “living” code. Each time I clicked “Yes” to conduct another transaction and noticed that my balance changed from 5,000 to 6,000, it was a triumph for me. The best part was the way the “Financial Summary” appeared after the “Deposit successful!” message."
   },
   {
     id: "activity-4",
@@ -83,7 +71,7 @@ const MIDTERM_PROJECTS = [
     file: "https://raw.githubusercontent.com/ederlyncaparas-jpg/EportfolioCaparas/main/pdfs/activity4-scholarship.pdf",
     fileType: "pdf",
     shortReflection: "Combining entrance exam scores and interview results.",
-    fullReflection: "The entire process was similar to that of a judge or assessor. The amount of logic required to combine entrance exam scores and interviews was immense. I was proud of myself when I realized that the program could distinguish between a \"Waitlisted\" student and an \"Admitted with Scholarship\" student. It was a tricky \"logic tree,\" but it was a success to reach the \"Enrollment Assessment Result.\""
+    fullReflection: "The entire process was similar to that of a judge or assessor. The amount of logic required to combine entrance exam scores and interviews was immense. I was proud of myself when I realized that the program could distinguish between a “Waitlisted” student and an “Admitted with Scholarship” student. It was a tricky “logic tree,” but it was a success to reach the “Enrollment Assessment Result.”"
   },
   {
     id: "activity-5",
@@ -107,12 +95,12 @@ const MIDTERM_PROJECTS = [
   },
   {
     id: "midterm-oop",
-    title: "Midterm OOP Exam",
+    title: "Midterm OOP",
     type: "Exam",
     icon: "🏫",
     file: null,
     fileType: "none",
-    shortReflection: "True/false, programming, and multiple choice.",
+    shortReflection: "Reflection on the written exam experience.",
     fullReflection: "Based on the experience of taking the test on OOP, the first page had true or false statements. It was difficult for me to give a definite answer because sometimes I had trouble differentiating between the concepts which were true and which were false, thus making me feel unsure about receiving high marks. But there was nothing to worry about because I made an effort by reading about and reviewing this course. In the programming section, sometimes I used a wrong label, or used a syntax that was inappropriate. There was no possibility of testing the code since this was only written on paper. As far as multiple choice question, I felt more comfortable but nevertheless, coding was a challenge to test my knowledge of the process. Most importantly, I have learned from the experience. Though my progress is slow, there is a greater likelihood of realizing my full potential as there are many chances for learning and understanding the processes in Java programming language."
   }
 ];
@@ -123,47 +111,34 @@ const FINAL_PLACEHOLDERS = [
   { title: "Final Project #3", icon: "✨" },
 ];
 
-// ======== STORAGE FOR PROJECT DATA ========
-let currentProject = null;
-
-// ======== SPA NAVIGATION ========
 const pages = document.querySelectorAll('.page');
 const navLinks = document.querySelectorAll('.nav-link');
 const hamburger = document.getElementById('hamburger');
 const navLinksContainer = document.querySelector('.nav-links');
 
 function navigateTo(pageId) {
-  // Hide all pages
   pages.forEach(p => p.classList.remove('active'));
   navLinks.forEach(l => l.classList.remove('active'));
 
-  // Show target page
   const target = document.getElementById(pageId);
   if (target) {
     target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // FIXED: Wrapped the selector in backticks
+  // FIXED: Backticks added for template literal
   const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
   if (activeLink) activeLink.classList.add('active');
 
-  // Update URL hash
   window.location.hash = pageId;
-
-  // Close mobile menu
   if(navLinksContainer) navLinksContainer.classList.remove('open');
   if(hamburger) hamburger.classList.remove('open');
 }
 
-// Make globally accessible for onclick in HTML
-window.navigateTo = navigateTo;
-
 navLinks.forEach(link => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
-    const page = link.dataset.page;
-    navigateTo(page);
+    navigateTo(link.dataset.page);
   });
 });
 
@@ -174,39 +149,19 @@ if (hamburger) {
   });
 }
 
-// Handle initial hash
-window.addEventListener('load', () => {
-  const hash = window.location.hash.replace('#', '') || 'home';
-  navigateTo(hash);
-});
-
-// Navbar scroll effect
-window.addEventListener('scroll', () => {
-  const navbar = document.getElementById('navbar');
-  if (navbar) {
-    if (window.scrollY > 10) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-  }
-});
-
-// ======== CARD RENDERING ========
 function createProjectCard(project, index) {
   const card = document.createElement('div');
   card.className = 'project-card';
-  // FIXED: Added backticks for template literal
+  // FIXED: Backticks added
   card.style.animationDelay = `${index * 80}ms`;
 
   const hasFile = project.fileType !== 'none';
 
   const buttonHTML = hasFile ? `
-    <button class="card-btn" data-project-id="${project.id}">
+    <button class="card-btn">
       View Project
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
       </svg>
     </button>` : `
     <span style="font-size:0.78rem; color:var(--text-muted); font-style:italic; margin-top:auto;">
@@ -221,13 +176,9 @@ function createProjectCard(project, index) {
     ${buttonHTML}
   `;
 
+  // BETTER UX: Click whole card to open
   if (hasFile) {
-    const button = card.querySelector('.card-btn');
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openModal(project);
-    });
+    card.addEventListener('click', () => openModal(project));
   }
 
   return card;
@@ -236,7 +187,7 @@ function createProjectCard(project, index) {
 function createPlaceholderCard(item, index) {
   const card = document.createElement('div');
   card.className = 'project-card placeholder-card';
-  // FIXED: Added backticks for template literal
+  // FIXED: Backticks added
   card.style.animationDelay = `${index * 80}ms`;
   card.innerHTML = `
     <div class="ph-icon">${item.icon}</div>
@@ -246,27 +197,6 @@ function createPlaceholderCard(item, index) {
   return card;
 }
 
-// Ensure the DOM is ready before injecting cards
-document.addEventListener('DOMContentLoaded', () => {
-  const midtermGrid = document.getElementById('midterm-grid');
-  const finalGrid = document.getElementById('final-grid');
-
-  if (midtermGrid) {
-    MIDTERM_PROJECTS.forEach((project, i) => {
-      midtermGrid.appendChild(createProjectCard(project, i));
-    });
-  }
-
-  if (finalGrid) {
-    FINAL_PLACEHOLDERS.forEach((item, i) => {
-      finalGrid.appendChild(createPlaceholderCard(item, i));
-    });
-  }
-  
-  observeCards();
-});
-
-// ======== MODAL SYSTEM ========
 const modalOverlay = document.getElementById('modal-overlay');
 const modalClose = document.getElementById('modal-close');
 const modalTitle = document.getElementById('modal-title');
@@ -276,26 +206,19 @@ const modalReflection = document.getElementById('modal-reflection');
 
 function openModal(project) {
   if (!modalOverlay) return;
-  
-  currentProject = project;
   modalTitle.textContent = project.title;
   modalTag.textContent = project.type;
   modalReflection.textContent = project.fullReflection;
-
   modalBody.innerHTML = '';
 
   if (project.fileType === 'pdf') {
     const embed = document.createElement('embed');
     embed.src = project.file;
     embed.type = 'application/pdf';
-    embed.style.width = "100%";
-    embed.style.height = "60vh";
     modalBody.appendChild(embed);
   } else if (project.fileType === 'img') {
     const img = document.createElement('img');
     img.src = project.file;
-    img.alt = project.title;
-    img.style.cssText = 'max-width:100%; max-height:65vh; object-fit:contain; border-radius:8px;';
     modalBody.appendChild(img);
   }
 
@@ -304,10 +227,8 @@ function openModal(project) {
 }
 
 function closeModal() {
-  if (!modalOverlay) return;
   modalOverlay.classList.remove('open');
   document.body.style.overflow = '';
-  setTimeout(() => { modalBody.innerHTML = ''; }, 300);
 }
 
 if (modalClose) modalClose.addEventListener('click', closeModal);
@@ -317,11 +238,18 @@ if (modalOverlay) {
   });
 }
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
+document.addEventListener('DOMContentLoaded', () => {
+  const midtermGrid = document.getElementById('midterm-grid');
+  const finalGrid = document.getElementById('final-grid');
+
+  if (midtermGrid) MIDTERM_PROJECTS.forEach((p, i) => midtermGrid.appendChild(createProjectCard(p, i)));
+  if (finalGrid) FINAL_PLACEHOLDERS.forEach((p, i) => finalGrid.appendChild(createPlaceholderCard(p, i)));
+
+  const hash = window.location.hash.replace('#', '') || 'home';
+  navigateTo(hash);
+  observeCards();
 });
 
-// ======== SMOOTH REVEAL ON SCROLL ========
 function observeCards() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -339,3 +267,9 @@ function observeCards() {
     observer.observe(card);
   });
 }
+
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  if (navbar && window.scrollY > 10) navbar.classList.add('scrolled');
+  else if (navbar) navbar.classList.remove('scrolled');
+});
