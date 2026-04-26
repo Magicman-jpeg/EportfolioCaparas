@@ -2,6 +2,7 @@
    OOP E-Portfolio — Main JavaScript
    ======================================== */
 
+// ======== PROJECT DATA ========
 const MIDTERM_PROJECTS = [
   {
     id: "about-me",
@@ -95,7 +96,7 @@ const MIDTERM_PROJECTS = [
   },
   {
     id: "midterm-oop",
-    title: "Midterm OOP",
+    title: "Midterm OOP Exam",
     type: "Exam",
     icon: "🏫",
     file: null,
@@ -111,11 +112,19 @@ const FINAL_PLACEHOLDERS = [
   { title: "Final Project #3", icon: "✨" },
 ];
 
+// ======== DOM ELEMENTS ========
 const pages = document.querySelectorAll('.page');
 const navLinks = document.querySelectorAll('.nav-link');
 const hamburger = document.getElementById('hamburger');
 const navLinksContainer = document.querySelector('.nav-links');
+const modalOverlay = document.getElementById('modal-overlay');
+const modalClose = document.getElementById('modal-close');
+const modalTitle = document.getElementById('modal-title');
+const modalTag = document.getElementById('modal-tag');
+const modalBody = document.getElementById('modal-body');
+const modalReflection = document.getElementById('modal-reflection');
 
+// ======== SPA NAVIGATION ========
 function navigateTo(pageId) {
   pages.forEach(p => p.classList.remove('active'));
   navLinks.forEach(l => l.classList.remove('active'));
@@ -126,7 +135,6 @@ function navigateTo(pageId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // FIXED: Backticks added for template literal
   const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
   if (activeLink) activeLink.classList.add('active');
 
@@ -149,17 +157,17 @@ if (hamburger) {
   });
 }
 
+// ======== CARD RENDERING ========
 function createProjectCard(project, index) {
   const card = document.createElement('div');
   card.className = 'project-card';
-  // FIXED: Backticks added
   card.style.animationDelay = `${index * 80}ms`;
 
   const hasFile = project.fileType !== 'none';
 
   const buttonHTML = hasFile ? `
     <button class="card-btn">
-      View Project
+      ${project.fileType === 'pdf' ? 'Open PDF' : 'View Image'}
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
         <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
       </svg>
@@ -176,10 +184,8 @@ function createProjectCard(project, index) {
     ${buttonHTML}
   `;
 
-  // BETTER UX: Click whole card to open
-  if (hasFile) {
-    card.addEventListener('click', () => openModal(project));
-  }
+  // Entire card is clickable for better interaction
+  card.addEventListener('click', () => openProject(project));
 
   return card;
 }
@@ -187,7 +193,6 @@ function createProjectCard(project, index) {
 function createPlaceholderCard(item, index) {
   const card = document.createElement('div');
   card.className = 'project-card placeholder-card';
-  // FIXED: Backticks added
   card.style.animationDelay = `${index * 80}ms`;
   card.innerHTML = `
     <div class="ph-icon">${item.icon}</div>
@@ -197,29 +202,29 @@ function createPlaceholderCard(item, index) {
   return card;
 }
 
-const modalOverlay = document.getElementById('modal-overlay');
-const modalClose = document.getElementById('modal-close');
-const modalTitle = document.getElementById('modal-title');
-const modalTag = document.getElementById('modal-tag');
-const modalBody = document.getElementById('modal-body');
-const modalReflection = document.getElementById('modal-reflection');
-
-function openModal(project) {
+// ======== MODAL & PDF HANDLING ========
+function openProject(project) {
+  // If it's a PDF, open in a new tab to avoid the "Refused to Connect" GitHub error
+  if (project.fileType === 'pdf') {
+    window.open(project.file, '_blank');
+  } 
+  
+  // Always open the modal to show the full reflection text
   if (!modalOverlay) return;
   modalTitle.textContent = project.title;
   modalTag.textContent = project.type;
   modalReflection.textContent = project.fullReflection;
   modalBody.innerHTML = '';
 
-  if (project.fileType === 'pdf') {
-    const embed = document.createElement('embed');
-    embed.src = project.file;
-    embed.type = 'application/pdf';
-    modalBody.appendChild(embed);
-  } else if (project.fileType === 'img') {
+  // If it's an image, embed it in the modal
+  if (project.fileType === 'img') {
     const img = document.createElement('img');
     img.src = project.file;
+    img.style.cssText = 'max-width:100%; max-height:65vh; object-fit:contain; border-radius:8px;';
     modalBody.appendChild(img);
+  } else if (project.fileType === 'pdf') {
+      // Small message for PDFs
+      modalBody.innerHTML = '<p style="color:var(--accent); text-align:center;">The PDF has been opened in a new tab.</p>';
   }
 
   modalOverlay.classList.add('open');
@@ -238,18 +243,24 @@ if (modalOverlay) {
   });
 }
 
+// ======== INITIALIZATION ========
 document.addEventListener('DOMContentLoaded', () => {
   const midtermGrid = document.getElementById('midterm-grid');
   const finalGrid = document.getElementById('final-grid');
 
-  if (midtermGrid) MIDTERM_PROJECTS.forEach((p, i) => midtermGrid.appendChild(createProjectCard(p, i)));
-  if (finalGrid) FINAL_PLACEHOLDERS.forEach((p, i) => finalGrid.appendChild(createPlaceholderCard(p, i)));
-
+  if (midtermGrid) {
+    MIDTERM_PROJECTS.forEach((p, i) => midtermGrid.appendChild(createProjectCard(p, i)));
+  }
+  if (finalGrid) {
+    FINAL_PLACEHOLDERS.forEach((p, i) => finalGrid.appendChild(createPlaceholderCard(p, i)));
+  }
+  
   const hash = window.location.hash.replace('#', '') || 'home';
   navigateTo(hash);
   observeCards();
 });
 
+// Card reveal animation on scroll
 function observeCards() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -270,6 +281,7 @@ function observeCards() {
 
 window.addEventListener('scroll', () => {
   const navbar = document.getElementById('navbar');
-  if (navbar && window.scrollY > 10) navbar.classList.add('scrolled');
-  else if (navbar) navbar.classList.remove('scrolled');
+  if (navbar) {
+    window.scrollY > 10 ? navbar.classList.add('scrolled') : navbar.classList.remove('scrolled');
+  }
 });
